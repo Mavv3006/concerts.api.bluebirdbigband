@@ -44,15 +44,8 @@ class Concert extends Model
         return $this->belongsTo(Place::class, 'place_plz', 'plz');
     }
 
-    protected function serializeDate(DateTimeInterface $date): string
+    public function date()
     {
-        return $date->format('Y-m-d');
-    }
-
-    public function toJson($options = 0)
-    {
-        return [
-            'date'=>$this->date,
-        ];
+        return $this->date->format('Y-m-d');
     }
 }

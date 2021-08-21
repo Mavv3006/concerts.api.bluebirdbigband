@@ -9,7 +9,7 @@ class ConcertResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'date' => $this->date->format('Y-m-d'),
+            'date' => $this->date(),
             'start_time' => $this->start_time,
             'end_time' => $this->end_time,
             'band_name' => $this->band->name,
