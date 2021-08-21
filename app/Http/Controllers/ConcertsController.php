@@ -4,16 +4,14 @@
 namespace App\Http\Controllers;
 
 
+use App\Http\Resources\ConcertResource;
 use App\Models\Concert;
 
 class ConcertsController extends Controller
 {
     public function all()
     {
-        $date = Concert::all()->first;
-        return response([
-            'date' => $date->date
-        ]);
+        return ConcertResource::collection(Concert::with('band', 'place')->get());
     }
 
     public function upcoming()

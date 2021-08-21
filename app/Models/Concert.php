@@ -48,4 +48,11 @@ class Concert extends Model
     {
         return $date->format('Y-m-d');
     }
+
+    public function toJson($options = 0)
+    {
+        return [
+            'date'=>$this->date,
+        ];
+    }
 }
