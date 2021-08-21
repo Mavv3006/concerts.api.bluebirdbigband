@@ -17,10 +17,7 @@ class ConcertsController extends Controller
 
     public function upcoming()
     {
-        $concerts = Concert::with('band', 'place')
-            ->whereDate('date', '>=', Carbon::today()->toDateString())
-            ->get();
-        return ConcertResource::collection($concerts);
+        return ConcertResource::collection($this->upcoming_concerts());
     }
 
     public function past()
@@ -29,5 +26,17 @@ class ConcertsController extends Controller
             ->whereDate('date', '<', Carbon::today()->toDateString())
             ->get();
         return ConcertResource::collection($concerts);
+    }
+
+    public function old_upcoming()
+    {
+
+    }
+
+    private function upcoming_concerts()
+    {
+        return Concert::with('band', 'place')
+            ->whereDate('date', '>=', Carbon::today()->toDateString())
+            ->get();
     }
 }
