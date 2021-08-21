@@ -20,3 +20,5 @@ $router->get('/', function () use ($router) {
 });
 
 $router->get('/all', 'ConcertsController@all');
+$router->get('/upcoming', 'ConcertsController@upcoming');
+$router->get('/past', 'ConcertsController@past');
