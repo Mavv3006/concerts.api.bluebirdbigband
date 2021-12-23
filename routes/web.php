@@ -24,4 +24,11 @@ $router->get('/upcoming', 'ConcertsController@upcoming');
 $router->get('/past', 'ConcertsController@past');
 $router->get('/old/upcoming', 'ConcertsController@old_upcoming');
 
-$router->post('login', 'AuthController@login');
+$router->group(['prefix' => 'auth'], function () use ($router) {
+    $router->post('login', 'AuthController@login');
+
+    $router->group(['middleware' => 'auth'], function () use ($router) {
+        $router->get('me', 'AuthController@me');
+        $router->get('logout', 'AuthController@logout');
+    });
+});

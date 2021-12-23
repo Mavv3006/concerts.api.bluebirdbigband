@@ -3,30 +3,50 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
-    public function login(): JsonResponse
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function login(Request $request): JsonResponse
     {
-        $credentials = request(['name', 'password']);
 
-        if (!$token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+        try {
+            $credentials = $this->validate($request, [
+                'name' => 'required',
+                'password' => 'required'
+            ]);
+
+            if (!$token = auth()->attempt($credentials)) {
+                return response()->json(['error' => 'Unauthorized'], 401);
+            }
+
+            return $this->respondWithToken($token);
+        } catch (ValidationException $e) {
+            return response()->json(['error' => 'Bad Request', 'message', $e->getMessage()], 403);
         }
-
-        return $this->respondWithToken($token);
     }
 
     public function logout(): JsonResponse
     {
         auth()->logout();
+        auth()->invalidate();
+        $user = auth()->user();
+        Log::info($user);
 
-        return response()->json(['message' => 'Successfully logged out', 'current user' => auth()->user()]);
+        return response()->json(['message' => 'Successfully logged out', 'current user' => $user]);
     }
 
     public function me(): JsonResponse
     {
-        return response()->json(auth()->user());
+        $user = auth()->user();
+        Log::info($user);
+        return response()->json($user);
     }
 
     protected function respondWithToken(string $token): JsonResponse

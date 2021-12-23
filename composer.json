@@ -43,6 +43,10 @@
         ],
         "serve": [
             "php -S localhost:8080 -t public/"
-        ]
+        ],
+        "post-package-install": [
+            "php artisan jwt:secret"
+        ],
+        "test": "phpunit"
     }
 }
