@@ -12,15 +12,21 @@ class AuthControllerTest extends TestCase
 
     public function test_login_successful()
     {
-        $user = User::factory()->create(['name' => 'test']);
+        User::factory()->create(['name' => 'test']);
 
-        $this->json('POST', 'login', [
-            'name' => $user->name,
-            'password' => $user->password
-        ])->seeJsonContains([
-//                'access_token' => $token,
-            'token_type' => 'bearer',
-//                'expires_in' => auth()->factory()->getTTL() * 60
-        ]);
+        $this->json('POST', 'auth/login', [
+            'name' => "test",
+            'password' => "test"
+        ])->assertResponseOk();
+    }
+
+    public function test_login_validation_error()
+    {
+        User::factory()->create(['name' => 'test']);
+
+        $this->json('POST', 'auth/login', [
+            'name' => "test",
+            'password' => "test"
+        ])->assertResponseOk();
     }
 }
