@@ -24,8 +24,3 @@ security vulnerabilities will be promptly addressed.
 ## License
 
 The Lumen framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-
-# Authentication
-
-- https://codershandbook.com/implementing-token-based-authentication-in-lumen
-- https://www.cloudways.com/blog/lumen-rest-api-authentication/
