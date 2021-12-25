@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -15,7 +16,6 @@ class AuthController extends Controller
      */
     public function login(Request $request): JsonResponse
     {
-
         try {
             $credentials = $this->validate($request, [
                 'name' => 'required',
@@ -28,7 +28,7 @@ class AuthController extends Controller
 
             return $this->respondWithToken($token);
         } catch (ValidationException $e) {
-            return response()->json(['error' => 'Bad Request', 'message', $e->getMessage()], 403);
+            return response()->json(['error' => 'Bad Request', 'message' => $e->getMessage()], 400);
         }
     }
 
@@ -51,10 +51,18 @@ class AuthController extends Controller
 
     protected function respondWithToken(string $token): JsonResponse
     {
+        $exp_in = auth()->factory()->getTTL() * 60;
+        $exp_at = Carbon::now()
+            ->addMinutes($exp_in)
+            ->timestamp;
+
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
+            'expires' => [
+                "in" => $exp_in,
+                'at' => $exp_at,
+            ]
         ]);
     }
 }
