@@ -8,6 +8,7 @@ use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Concert extends Model
 {
@@ -42,6 +43,11 @@ class Concert extends Model
     public function place(): BelongsTo
     {
         return $this->belongsTo(Place::class, 'place_plz', 'plz');
+    }
+
+    public function recordings(): HasMany
+    {
+        return $this->hasMany(ConcertRecording::class, 'concerts_date', 'date');
     }
 
     public function date()

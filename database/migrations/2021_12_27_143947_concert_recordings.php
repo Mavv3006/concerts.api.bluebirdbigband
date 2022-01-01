@@ -16,9 +16,10 @@ class ConcertRecordings extends Migration
     {
         Schema::create('concert_recordings', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('file_name');
+            $table->string('song_name');
             $table->double('size');
-            $table->date('concert_date');
+            $table->date('concerts_date');
             $table->timestamps();
         });
         // TODO: add foreign key to concerts.date

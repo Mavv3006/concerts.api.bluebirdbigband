@@ -14,9 +14,9 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this
-            ->call(PlaceSeeder::class)
-            ->call(BandSeeder::class)
-            ->call(ConcertSeeder::class)
+//            ->call(PlaceSeeder::class)
+//            ->call(BandSeeder::class)
+//            ->call(ConcertSeeder::class)
             ->call(ConcertRecordingsSeeder::class);
     }
 }

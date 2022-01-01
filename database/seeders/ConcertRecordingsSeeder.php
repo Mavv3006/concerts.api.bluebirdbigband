@@ -13,12 +13,13 @@ class ConcertRecordingsSeeder extends Seeder
      */
     public function run(): void
     {
-        try {
-            ConcertRecording::factory()
-                ->count(25)
-                ->create();
-        } catch (QueryException $e) {
-            //
+        for ($i = 0; $i < 25; $i++) {
+            try {
+                ConcertRecording::factory()->create();
+            } catch
+            (QueryException $e) {
+                print_r("(" . $i . ") Failed to create " . ConcertRecording::class . "\nMessage: " . $e->getMessage() . "\n\n");
+            }
         }
     }
 }
