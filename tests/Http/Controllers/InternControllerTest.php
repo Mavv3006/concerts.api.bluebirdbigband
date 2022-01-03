@@ -2,7 +2,6 @@
 
 namespace Http\Controllers;
 
-use App\Models\Concert;
 use App\Models\ConcertRecording;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use TestCase;

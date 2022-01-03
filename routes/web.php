@@ -32,3 +32,10 @@ $router->group(['prefix' => 'auth'], function () use ($router) {
         $router->get('logout', 'AuthController@logout');
     });
 });
+
+$router->group(['prefix' => 'intern'], function () use ($router) {
+    $router->get('basics', 'InternController@basics');
+    $router->get('downloads', 'InternController@downloads');
+    $router->get('song/{file_name}', ['as' => 'song', 'uses' => 'InternController@song']);
+});
+
