@@ -6,6 +6,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Place extends Model
 {
@@ -22,7 +23,7 @@ class Place extends Model
         'updated_at'
     ];
 
-    public function concerts()
+    public function concerts(): HasMany
     {
         return $this->hasMany(Concert::class, 'place_plz', 'plz');
     }
