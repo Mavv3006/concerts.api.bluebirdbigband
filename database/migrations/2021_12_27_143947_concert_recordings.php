@@ -19,10 +19,9 @@ class ConcertRecordings extends Migration
             $table->string('file_name');
             $table->string('song_name');
             $table->double('size');
-            $table->date('concerts_date');
+            $table->date('concert_date');
             $table->timestamps();
         });
-        // TODO: add foreign key to concerts.date
     }
 
     /**

@@ -15,11 +15,13 @@ class ConcertRecordingFactory extends Factory
      */
     public function definition(): array
     {
+        $concert = Concert::factory()->create();
+
         return [
             'file_name' => $this->faker->slug(2, false),
             'song_name' => $this->faker->name,
             'size' => mt_rand(5 * 10, 25 * 10) / 10,
-            'concerts_date' => Concert::factory()->create()->date()
+            'concert_date' => $concert->date()
         ];
     }
 }

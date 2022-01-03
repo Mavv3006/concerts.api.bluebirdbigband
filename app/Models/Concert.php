@@ -4,7 +4,6 @@
 namespace App\Models;
 
 
-use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -17,6 +16,11 @@ class Concert extends Model
     protected $dates = [
         'date'
     ];
+    protected $primaryKey = 'date';
+
+    protected $keyType = 'date';
+
+    protected $table = 'concerts';
 
     protected $fillable = [
         'start_time',
@@ -47,7 +51,7 @@ class Concert extends Model
 
     public function recordings(): HasMany
     {
-        return $this->hasMany(ConcertRecording::class, 'concerts_date', 'date');
+        return $this->hasMany(ConcertRecording::class, 'concert_date', 'date');
     }
 
     public function date()

@@ -10,8 +10,21 @@ class ConcertRecording extends Model
 {
     use HasFactory;
 
+    protected $table = 'concert_recordings';
+
+    protected $fillable = [
+        'file_name',
+        'song_name',
+        'size'
+    ];
+
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
+
     public function concert(): BelongsTo
     {
-        return $this->belongsTo(Concert::class, 'concerts_date', 'date');
+        return $this->belongsTo(Concert::class, 'concert_date', 'date');
     }
 }

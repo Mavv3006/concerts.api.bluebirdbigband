@@ -2,8 +2,8 @@
 
 namespace Http\Controllers;
 
+use App\Models\Concert;
 use App\Models\ConcertRecording;
-use Database\Factories\ConcertRecordingFactory;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use TestCase;
 
@@ -77,23 +77,13 @@ class InternControllerTest extends TestCase
 
     public function test_downloads()
     {
-        ConcertRecording::factory()->count(2)->create();
+        ConcertRecording::factory()
+            ->count(3)
+            ->create();
 
-        $this
-            ->get('intern/downloads')
-            ->seeStatusCode(200);
+        $this->get('intern/downloads');
         var_dump($this->response->getContent());
-//            ->seeJsonStructure([
-//                [
-//                    'place_description',
-//                    'date',
-//                    'files' => [
-//                        'song_name',
-//                        'link',
-//                        'file_name',
-//                        'file_size'
-//                    ]]
-//            ]);
+        $this->seeStatusCode(200);
     }
 
     // TODO: validate functioning auth middleware for these routes

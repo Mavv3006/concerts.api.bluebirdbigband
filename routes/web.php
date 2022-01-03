@@ -24,5 +24,8 @@ $router->get('/upcoming', 'ConcertsController@upcoming');
 $router->get('/past', 'ConcertsController@past');
 $router->get('/old/upcoming', 'ConcertsController@old_upcoming');
 
-$router->get('intern/basics', 'InternController@basics');
-$router->get('intern/downloads', 'InternController@downloads');
+$router->group(['prefix' => 'intern'], function () use ($router) {
+    $router->get('basics', 'InternController@basics');
+    $router->get('downloads', 'InternController@downloads');
+    $router->get('song/{file_name}', ['as' => 'song', 'uses' => 'InternController@song']);
+});
