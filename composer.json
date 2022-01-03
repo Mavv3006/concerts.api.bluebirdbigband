@@ -10,7 +10,8 @@
     "type": "project",
     "require": {
         "php": "^8.0",
-        "laravel/lumen-framework": "^8.0"
+        "laravel/lumen-framework": "^8.0",
+        "php-open-source-saver/jwt-auth": "^1.2"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
@@ -42,6 +43,10 @@
         ],
         "serve": [
             "php -S localhost:8080 -t public/"
-        ]
+        ],
+        "post-package-install": [
+            "php artisan jwt:secret"
+        ],
+        "test": "phpunit"
     }
 }

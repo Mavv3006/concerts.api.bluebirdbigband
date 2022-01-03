@@ -13,7 +13,7 @@ class Authenticate
      *
      * @var Auth
      */
-    protected $auth;
+    protected Auth $auth;
 
     /**
      * Create a new middleware instance.
@@ -34,10 +34,10 @@ class Authenticate
      * @param string|null $guard
      * @return mixed
      */
-    public function handle(Request $request, Closure $next, $guard = null)
+    public function handle(Request $request, Closure $next, string $guard = null): mixed
     {
         if ($this->auth->guard($guard)->guest()) {
-            return response('Unauthorized.', 401);
+            return response()->json(['error' => 'Unauthorized'], 401);
         }
 
         return $next($request);
