@@ -18,8 +18,7 @@ class ConcertRecordingResource extends JsonResource
     public function toArray($request): array|JsonSerializable|Arrayable
     {
         return [
-            'name' => $this->song_name,
-            'link' => route('song', ['file_name' => $this->file_name]),
+            'description' => $this->description,
             'file_name' => $this->file_name,
             'file_size' => $this->size
         ];

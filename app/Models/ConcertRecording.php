@@ -14,7 +14,7 @@ class ConcertRecording extends Model
 
     protected $fillable = [
         'file_name',
-        'song_name',
+        'description',
         'size'
     ];
 

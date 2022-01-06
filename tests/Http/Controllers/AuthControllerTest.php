@@ -53,19 +53,17 @@ class AuthControllerTest extends TestCase
 
     public function test_me_successful()
     {
-        $login = $this->login();
         $this
-            ->get('auth/me', headers: $this->getAuthHeader($login->access_token))
+            ->get('auth/me', $this->getLoginHeader())
             ->seeStatusCode(200)
             ->seeJsonStructure(['name', 'id', 'created_at', 'updated_at']);
     }
 
     public function test_logout_successful()
     {
-        $login = $this->login();
-        $this->get('auth/logout', headers: $this->getAuthHeader($login->access_token));
-        var_dump($this->response->getContent());
-        $this->seeStatusCode(200)
+        $this
+            ->get('auth/logout', $this->getLoginHeader())
+            ->seeStatusCode(200)
             ->seeJsonStructure(['message']);
     }
 
@@ -83,28 +81,5 @@ class AuthControllerTest extends TestCase
             ->get('auth/me')
             ->seeStatusCode(401)
             ->seeJsonStructure(['error']);
-    }
-
-    /**
-     * @return mixed the JWT to use for logging in
-     */
-    private function login(): mixed
-    {
-        User::factory()->create(['name' => 'test', 'password' => Hash::make('test')]);
-        $content = $this
-            ->post('auth/login', ['name' => "test", 'password' => "test"])
-            ->response
-            ->getContent();
-        return json_decode($content);
-    }
-
-    /**
-     * @param string $token
-     * @return string[]
-     */
-    #[ArrayShape(['authorization' => "string"])]
-    private function getAuthHeader(string $token): array
-    {
-        return ['authorization' => 'bearer ' . base64_encode($token)];
     }
 }

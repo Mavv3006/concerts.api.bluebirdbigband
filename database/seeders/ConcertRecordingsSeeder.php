@@ -16,8 +16,7 @@ class ConcertRecordingsSeeder extends Seeder
         for ($i = 0; $i < 25; $i++) {
             try {
                 ConcertRecording::factory()->create();
-            } catch
-            (QueryException $e) {
+            } catch (QueryException $e) {
                 print_r("(" . $i . ") Failed to create " . ConcertRecording::class . "\nMessage: " . $e->getMessage() . "\n\n");
             }
         }

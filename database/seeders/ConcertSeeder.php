@@ -15,12 +15,12 @@ class ConcertSeeder extends Seeder
      */
     public function run()
     {
-        try {
-            Concert::factory()
-                ->count(25)
-                ->create();
-        } catch (QueryException $ex) {
-            //
+        for ($i = 0; $i < 25; $i++) {
+            try {
+                Concert::factory()->create();
+            } catch (QueryException $e) {
+                print_r("(" . $i . ") Failed to create " . Concert::class . "\nMessage: " . $e->getMessage() . "\n\n");
+            }
         }
     }
 }
