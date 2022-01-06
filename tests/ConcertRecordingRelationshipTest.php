@@ -29,8 +29,9 @@ class ConcertRecordingRelationshipTest extends TestCase
 
     public function testConcertHasRecording()
     {
-        $concert = Concert::factory()->create();
-        $recording = ConcertRecording::factory()->create(['concert_date' => $concert->date()]);
+        Concert::factory()->create();
+        $concert = Concert::first();
+        $recording = ConcertRecording::factory()->create();
 
         $this->assertEquals($concert->date(), $recording->concert_date);
         $this->assertEquals(1, $concert->recordings->count());
@@ -40,11 +41,15 @@ class ConcertRecordingRelationshipTest extends TestCase
 
     public function testRecordingHasConcert()
     {
-        $concert = Concert::factory()->create();
-        $recording = ConcertRecording::factory()->create(['concert_date' => $concert->date()]);
+        Concert::factory()->create();
+        $recording = ConcertRecording::factory()->create();
 
-        $this->assertEquals($concert->date(), $recording->concert_date);
-        $this->assertInstanceOf(Concert::class, $recording->concert);
+        $this->assertEquals(1, Concert::all()->count());
+        $this->assertEquals(1, ConcertRecording::all()->count());
+
+        $this->assertEquals(Concert::first()->date(), $recording->concert_date);
+        $this->assertEquals(1, $recording->concert()->count());
         $this->assertEquals(1, $recording->concert->count());
+        $this->assertInstanceOf(Concert::class, $recording->concert);
     }
 }

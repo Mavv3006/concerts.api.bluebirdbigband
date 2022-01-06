@@ -25,7 +25,7 @@ class ConcertFactory extends Factory
         $start_time = Carbon::createFromTimestamp($this->faker->dateTimeBetween('-3 years',
             '+3 years')->getTimestamp());
         $end_time = Carbon::createFromFormat('Y-m-d H:i:s', $start_time)->addHours($randomDuration);
-        $date = $this->faker->dateTimeThisYear('+6 months');
+        $date = $this->faker->dateTimeThisYear('+12 months');
 
         return [
             'date' => $date,
