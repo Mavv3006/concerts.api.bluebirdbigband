@@ -17,7 +17,7 @@ class ConcertRecordings extends Migration
         Schema::create('concert_recordings', function (Blueprint $table) {
             $table->id();
             $table->string('file_name');
-            $table->string('song_name');
+            $table->string('description');
             $table->double('size');
             $table->date('concert_date');
             $table->timestamps();

@@ -10,10 +10,11 @@ class ConcertsTest extends TestCase
 
     public function test_upcoming_including_today()
     {
-        $concert = Concert::factory()->create([
+        Concert::factory()->create([
             'date' => Carbon::today()->toDateString(),
             'start_time' => date('H:i:s')
         ]);
+        $concert = Concert::first();
 
         $this->json('GET', 'upcoming')
             ->seeJsonContains([

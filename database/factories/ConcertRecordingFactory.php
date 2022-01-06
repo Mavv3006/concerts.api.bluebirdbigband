@@ -17,7 +17,7 @@ class ConcertRecordingFactory extends Factory
     {
         return [
             'file_name' => $this->faker->slug(2, false),
-            'song_name' => $this->faker->name,
+            'description' => $this->faker->name,
             'size' => mt_rand(5 * 10, 25 * 10) / 10,
             'concert_date' => Concert::all()->random()->date()
         ];

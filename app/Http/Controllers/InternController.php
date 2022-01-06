@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\TrimmedConcertResource;
 use App\Models\Concert;
-use App\Models\ConcertRecording;
 use Illuminate\Http\JsonResponse;
 
 class InternController extends Controller
@@ -43,24 +42,6 @@ class InternController extends Controller
 
     public function downloads(): JsonResponse
     {
-        /*
-         * - Konzert 1 { place_description: string, date: string }
-         *      - Datei 2 { name: string, link: string, datei_name: string, datei_größe: double (in MB) }
-         *      - Datei 3 { name: string, link: string, datei_name: string, datei_größe: double (in MB) }
-         *      - Datei 4 { name: string, link: string, datei_name: string, datei_größe: double (in MB) }
-         *      - Datei 1 { name: string, link: string, datei_name: string, datei_größe: double (in MB) }
-         * - Konzert 2 { place_description: string, date: string }
-         *      - Datei 1 { name: string, link: string, datei_name: string, datei_größe: double (in MB) }
-         *      - Datei 2 { name: string, link: string, datei_name: string, datei_größe: double (in MB) }
-         *      - Datei 3 { name: string, link: string, datei_name: string, datei_größe: double (in MB) }
-         *      - Datei 4 { name: string, link: string, datei_name: string, datei_größe: double (in MB) }
-         * */
-//        $concerts = Concert
-//            ::select('date', 'place_description', 'song_name', 'file_name')
-//            ->get();
-//        return response()->json($concerts);
-
-
-        return TrimmedConcertResource::collection(Concert::all())->response();
+        return TrimmedConcertResource::collection(Concert::has('recordings')->get())->response();
     }
 }

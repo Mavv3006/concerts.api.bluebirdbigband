@@ -15,12 +15,13 @@ class TrimmedConcertResource extends JsonResource
      */
     public function toArray($request): array
     {
-        var_dump($this->recordings()->getResults()->toQuery());
-
         return [
-            'date' => $this->date(),
-            'description' => $this->place_description,
-            'recordings' => ConcertRecordingResource::collection($this->recordings()->getResults())
+            'concert' => [
+                'date' => $this->date(),
+                'description' => $this->place_description,
+                'place' => $this->place->name
+            ],
+            'files' => ConcertRecordingResource::collection($this->recordings()->getResults())
         ];
     }
 }
