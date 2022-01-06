@@ -84,27 +84,4 @@ class AuthControllerTest extends TestCase
             ->seeStatusCode(401)
             ->seeJsonStructure(['error']);
     }
-
-    /**
-     * @return mixed the JWT to use for logging in
-     */
-    private function login(): mixed
-    {
-        User::factory()->create(['name' => 'test', 'password' => Hash::make('test')]);
-        $content = $this
-            ->post('auth/login', ['name' => "test", 'password' => "test"])
-            ->response
-            ->getContent();
-        return json_decode($content);
-    }
-
-    /**
-     * @param string $token
-     * @return string[]
-     */
-    #[ArrayShape(['authorization' => "string"])]
-    private function getAuthHeader(string $token): array
-    {
-        return ['authorization' => 'bearer ' . base64_encode($token)];
-    }
 }

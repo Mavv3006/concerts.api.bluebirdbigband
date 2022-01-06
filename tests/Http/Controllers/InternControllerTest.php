@@ -69,7 +69,7 @@ class InternControllerTest extends TestCase
             ]
         ];
         $this
-            ->get('intern/basics')
+            ->get('intern/basics', $this->getLoginHeader())
             ->seeStatusCode(200)
             ->seeJsonStructure($json_response_structure)
             ->seeJsonEquals($json_response_exact);
@@ -80,7 +80,7 @@ class InternControllerTest extends TestCase
         Concert::factory()->count(3)->create();
         ConcertRecording::factory()->count(6)->create();
 
-        $this->get('intern/downloads');
+        $this->get('intern/downloads', $this->getLoginHeader());
         $this->seeStatusCode(200);
         $this->seeJsonStructure([
             [
@@ -105,7 +105,7 @@ class InternControllerTest extends TestCase
         Concert::factory()->count(3)->create();
 
         $this
-            ->get('intern/downloads')
+            ->get('intern/downloads', $this->getLoginHeader())
             ->seeStatusCode(200)
             ->seeJsonEquals([]);
     }
@@ -119,7 +119,7 @@ class InternControllerTest extends TestCase
         $concert = $recording->concert;
 
         $this
-            ->get('intern/downloads')
+            ->get('intern/downloads', $this->getLoginHeader())
             ->seeStatusCode(200)
             ->seeJsonEquals([
                 [
@@ -136,6 +136,17 @@ class InternControllerTest extends TestCase
                         ]
                     ]
                 ]
+            ]);
+    }
+
+    public function test_downloads_without_logging_in()
+    {
+        $this
+            ->get('intern/downloads')
+            ->seeStatusCode(401)
+            ->seeJsonStructure([
+                'error',
+                'message'
             ]);
     }
 
