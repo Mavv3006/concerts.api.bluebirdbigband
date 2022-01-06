@@ -1,10 +1,14 @@
 <?php
 
+namespace Http\Controllers;
+
 use App\Models\Concert;
+use DateTime;
 use Illuminate\Support\Carbon;
 use Laravel\Lumen\Testing\DatabaseMigrations;
+use TestCase;
 
-class ConcertsTest extends TestCase
+class ConcertsControllerTest extends TestCase
 {
     use DatabaseMigrations;
 
@@ -26,7 +30,7 @@ class ConcertsTest extends TestCase
     {
         $time = new DateTime();
         $time->modify('-2 hours');
-        $concert = Concert::factory()->create([
+        Concert::factory()->create([
             'date' => Carbon::today()->toDateString(),
             'start_time' => $time->format('H:i:s'),
         ]);

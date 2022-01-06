@@ -53,19 +53,17 @@ class AuthControllerTest extends TestCase
 
     public function test_me_successful()
     {
-        $login = $this->login();
         $this
-            ->get('auth/me', headers: $this->getAuthHeader($login->access_token))
+            ->get('auth/me', $this->getLoginHeader())
             ->seeStatusCode(200)
             ->seeJsonStructure(['name', 'id', 'created_at', 'updated_at']);
     }
 
     public function test_logout_successful()
     {
-        $login = $this->login();
-        $this->get('auth/logout', headers: $this->getAuthHeader($login->access_token));
-        var_dump($this->response->getContent());
-        $this->seeStatusCode(200)
+        $this
+            ->get('auth/logout', $this->getLoginHeader())
+            ->seeStatusCode(200)
             ->seeJsonStructure(['message']);
     }
 

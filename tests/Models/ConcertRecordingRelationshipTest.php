@@ -1,9 +1,13 @@
 <?php
 
+namespace Models;
+
 use App\Models\Concert;
 use App\Models\ConcertRecording;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Schema;
 use Laravel\Lumen\Testing\DatabaseMigrations;
+use TestCase;
 
 class ConcertRecordingRelationshipTest extends TestCase
 {
@@ -16,7 +20,7 @@ class ConcertRecordingRelationshipTest extends TestCase
                 'id',
                 'concert_date',
                 'file_name',
-                'song_name',
+                'description',
                 'size'
             ])
         );
@@ -36,7 +40,7 @@ class ConcertRecordingRelationshipTest extends TestCase
         $this->assertEquals($concert->date(), $recording->concert_date);
         $this->assertEquals(1, $concert->recordings->count());
         $this->assertTrue($concert->recordings->contains($recording));
-        $this->assertInstanceOf('\Illuminate\Database\Eloquent\Collection', $concert->recordings);
+        $this->assertInstanceOf(Collection::class, $concert->recordings);
     }
 
     public function testRecordingHasConcert()

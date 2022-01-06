@@ -80,24 +80,24 @@ class InternControllerTest extends TestCase
         Concert::factory()->count(3)->create();
         ConcertRecording::factory()->count(6)->create();
 
-        $this->get('intern/downloads', $this->getLoginHeader());
-        $this->seeStatusCode(200);
-        $this->seeJsonStructure([
-            [
-                'concert' => [
-                    'date',
-                    'description',
-                    'place'
-                ],
-                'files' => [
-                    [
+        $this->get('intern/downloads', $this->getLoginHeader())
+            ->seeStatusCode(200)
+            ->seeJsonStructure([
+                [
+                    'concert' => [
+                        'date',
                         'description',
-                        'file_size',
-                        'file_name'
+                        'place'
+                    ],
+                    'files' => [
+                        [
+                            'description',
+                            'file_size',
+                            'file_name'
+                        ]
                     ]
                 ]
-            ]
-        ]);
+            ]);
     }
 
     public function test_downloads_without_files()
@@ -146,10 +146,16 @@ class InternControllerTest extends TestCase
             ->seeStatusCode(401)
             ->seeJsonStructure([
                 'error',
-                'message'
             ]);
     }
 
-    // TODO: validate functioning auth middleware for these routes
-
+    public function test_basics_without_logging_in()
+    {
+        $this
+            ->get('intern/basics')
+            ->seeStatusCode(401)
+            ->seeJsonStructure([
+                'error',
+            ]);
+    }
 }
