@@ -42,6 +42,7 @@ class InternController extends Controller
 
     public function downloads(): JsonResponse
     {
-        return TrimmedConcertResource::collection(Concert::has('recordings')->get())->response();
+        $concerts = Concert::has('recordings')->get();
+        return TrimmedConcertResource::collection($concerts)->response();
     }
 }

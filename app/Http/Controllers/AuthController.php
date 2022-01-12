@@ -28,7 +28,11 @@ class AuthController extends Controller
 
             return $this->respondWithToken($token);
         } catch (ValidationException $e) {
-            return response()->json(['error' => 'Bad Request', 'message' => $e->getMessage()], 400);
+            $content = [
+                'error' => 'Bad Request',
+                'message' => $e->getMessage()
+            ];
+            return response()->json($content, 400);
         }
     }
 
@@ -50,14 +54,14 @@ class AuthController extends Controller
         $exp_at = Carbon::now()
             ->addMinutes($exp_in)
             ->timestamp;
-
-        return response()->json([
+        $content = [
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires' => [
                 "in" => $exp_in,
                 'at' => $exp_at,
             ]
-        ]);
+        ];
+        return response()->json($content);
     }
 }
