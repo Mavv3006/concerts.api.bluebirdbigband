@@ -50,7 +50,7 @@ class AuthController extends Controller
 
     protected function respondWithToken(string $token): JsonResponse
     {
-        $exp_in = Auth::factory()->getTTL() * 60;
+        $exp_in = Auth::factory()->getTTL();
         $exp_at = Carbon::now()
             ->addMinutes($exp_in)
             ->timestamp;
@@ -60,7 +60,7 @@ class AuthController extends Controller
             'expires' => [
                 "in" => $exp_in,
                 'at' => $exp_at,
-            ]
+            ],
         ];
         return response()->json($content);
     }
