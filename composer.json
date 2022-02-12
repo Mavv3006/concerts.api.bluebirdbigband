@@ -12,6 +12,7 @@
         "php": "^8.0",
         "fruitcake/laravel-cors": "^2.0",
         "laravel/lumen-framework": "^8.0",
+        "league/flysystem": "1.1",
         "php-open-source-saver/jwt-auth": "^1.2"
     },
     "require-dev": {
@@ -46,8 +47,7 @@
             "php -S localhost:8080 -t public/"
         ],
         "post-package-install": [
-            "php artisan jwt:secret",
-            "yes"
+            "php artisan jwt:secret"
         ],
         "test": "phpunit"
     }

@@ -42,3 +42,7 @@ $router->group([
     $router->get('song/{file_name}', ['as' => 'song', 'uses' => 'InternController@song']);
 });
 
+$router->group(['prefix' => 'download'], function () use ($router) {
+    $router->get('all-filenames', 'DownloadController@getAllFileNames');
+});
+
