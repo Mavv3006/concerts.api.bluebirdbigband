@@ -44,5 +44,6 @@ $router->group([
 
 $router->group(['prefix' => 'download'], function () use ($router) {
     $router->get('all-filenames', 'DownloadController@getAllFileNames');
+    $router->get('{id}', 'DownloadController@download');
 });
 
