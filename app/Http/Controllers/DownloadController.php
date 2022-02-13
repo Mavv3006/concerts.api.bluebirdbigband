@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ConcertRecording;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
@@ -32,5 +33,10 @@ class DownloadController extends Controller
             default:
                 return response("File does not exist", status: 404);
         }
+    }
+
+    function recordings(): JsonResponse
+    {
+        return response()->json(ConcertRecording::all());
     }
 }
