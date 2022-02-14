@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\ConcertRecording;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Lumen\Http\ResponseFactory;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -33,6 +35,20 @@ class DownloadController extends Controller
             default:
                 return response("File does not exist", status: 404);
         }
+    }
+
+    function downloadByName(Request $request): Response|StreamedResponse|ResponseFactory
+    {
+        $name = $request->query('name');
+        Log::info("requesting to download file with name '" . $name . "'");
+
+        if (Storage::exists($name)) {
+            Log::info("the file does exist");
+            return Storage::download($name);
+        }
+
+        Log::warning("the file does not exist");
+        return \response("File not found", status: 404);
     }
 
     function recordings(): JsonResponse
