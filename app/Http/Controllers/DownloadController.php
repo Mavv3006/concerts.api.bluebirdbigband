@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ConcertRecording;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -49,10 +48,5 @@ class DownloadController extends Controller
 
         Log::warning("the file does not exist");
         return \response("File not found", status: 404);
-    }
-
-    function recordings(): JsonResponse
-    {
-        return response()->json(ConcertRecording::all());
     }
 }

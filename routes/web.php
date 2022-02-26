@@ -43,9 +43,15 @@ $router->group([
 });
 
 $router->group(['prefix' => 'download'], function () use ($router) {
-    $router->get('all-filenames', 'DownloadController@getAllFileNames');
-    $router->get('id/{id}', 'DownloadController@download');
-    $router->get('filename', 'DownloadController@downloadByName');
-    $router->get('recordings', 'DownloadController@recordings');
+    $router->group(['prefix' => 'debug'], function () use ($router) {
+        $router->get('all-filenames', 'DownloadController@getAllFileNames');
+        $router->get('id/{id}', 'DownloadController@download');
+        $router->get('filename', 'DownloadController@downloadByName');
+    });
+    $router->get('recordings', 'ConcertRecordingsController@getAll');
+    $router->get('recording', 'ConcertRecordingsController@oneFile');
+    $router->get('songs', 'SongsController@getAll');
+    $router->get('song', 'SongsController@oneFile');
+
 });
 
