@@ -27,4 +27,4 @@ The Lumen framework is open-sourced software licensed under the [MIT license](ht
 
 ## Getting started
 
-To start using this project refer to [Getting started](Getting%20Started.md)
+To start using this project refer to [Getting started](Getting%20Started.md).
