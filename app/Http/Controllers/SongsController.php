@@ -23,7 +23,7 @@ class SongsController extends Controller
         $file_name = $request->query('file_name');
         Log::info("[SongsController] Requesting to download file with name '" . $file_name . "'");
 
-        $file_path = 'recordings/' . $file_name;
+        $file_path = 'songs/' . $file_name;
         if (Storage::exists($file_path)) {
             Log::info('[SongsController] The file does exist');
             return Storage::download($file_path);
