@@ -38,7 +38,6 @@ $router->group([
     'middleware' => 'auth'
 ], function () use ($router) {
     $router->get('basics', 'InternController@basics');
-    $router->get('downloads', 'InternController@downloads');
     $router->get('song/{file_name}', ['as' => 'song', 'uses' => 'InternController@song']);
 });
 
@@ -48,9 +47,13 @@ $router->group(['prefix' => 'download'], function () use ($router) {
         $router->get('id/{id}', 'DownloadController@download');
         $router->get('filename', 'DownloadController@downloadByName');
     });
-    $router->get('recordings', 'ConcertRecordingsController@getAll');
+
+    $router->group(['middleware' => 'auth'], function () use ($router) {
+        $router->get('recordings', 'InternController@downloads');
+        $router->get('songs', 'SongsController@getAll');
+    });
+
     $router->get('recording', 'ConcertRecordingsController@oneFile');
-    $router->get('songs', 'SongsController@getAll');
     $router->get('song', 'SongsController@oneFile');
 
 });

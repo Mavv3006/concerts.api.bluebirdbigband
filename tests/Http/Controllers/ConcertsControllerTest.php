@@ -41,4 +41,11 @@ class ConcertsControllerTest extends TestCase
 
         $this->assertEquals(1, $count);
     }
+
+    public function test_no_concerts()
+    {
+        $this
+            ->get('upcoming')
+            ->seeJsonStructure(['*' => []]);
+    }
 }

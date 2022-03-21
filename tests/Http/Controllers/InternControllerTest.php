@@ -139,9 +139,7 @@ class InternControllerTest extends TestCase
         $this
             ->get('intern/downloads')
             ->seeStatusCode(401)
-            ->seeJsonStructure([
-                'error',
-            ]);
+            ->seeJsonStructure(['error']);
     }
 
     public function test_basics_without_logging_in()
