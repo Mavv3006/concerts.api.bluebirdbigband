@@ -15,10 +15,6 @@
 
 use Laravel\Lumen\Routing\Router;
 
-$router->get('/', function () use ($router) {
-    return $router->app->version();
-});
-
 $router->get('/all', 'ConcertsController@all');
 $router->get('/upcoming', 'ConcertsController@upcoming');
 $router->get('/past', 'ConcertsController@past');
@@ -51,10 +47,10 @@ $router->group(['prefix' => 'download'], function () use ($router) {
     $router->group(['middleware' => 'auth'], function () use ($router) {
         $router->get('recordings', 'InternController@downloads');
         $router->get('songs', 'SongsController@getAll');
+        $router->get('song', 'SongsController@oneFile');
     });
 
     $router->get('recording', 'ConcertRecordingsController@oneFile');
-    $router->get('song', 'SongsController@oneFile');
 
 });
 

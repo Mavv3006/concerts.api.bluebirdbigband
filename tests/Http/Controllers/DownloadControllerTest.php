@@ -34,6 +34,7 @@ class DownloadControllerTest extends TestCase
         $this
             ->get($this->songs_url, $this->getLoginHeader())
             ->seeStatusCode(200)
+            ->seeHeader('content-type', 'application/json')
             ->seeJsonStructure($json_structure);
     }
 
@@ -42,6 +43,7 @@ class DownloadControllerTest extends TestCase
         $this
             ->get($this->songs_url)
             ->seeStatusCode(401)
+            ->seeHeader('content-type', 'application/json')
             ->seeJsonStructure(['error']);
     }
 
@@ -50,6 +52,7 @@ class DownloadControllerTest extends TestCase
         $this
             ->get($this->songs_url, $this->getLoginHeader())
             ->seeStatusCode(200)
+            ->seeHeader('content-type', 'application/json')
             ->seeJsonStructure(['*' => []]);
     }
 
@@ -97,6 +100,7 @@ class DownloadControllerTest extends TestCase
         $this
             ->get($this->recordings_url, $this->getLoginHeader())
             ->seeStatusCode(200)
+            ->seeHeader('content-type', 'application/json')
             ->seeJsonStructure($json_structure)
             ->seeJsonEquals($json_exact);
     }
@@ -106,6 +110,7 @@ class DownloadControllerTest extends TestCase
         $this
             ->get($this->recordings_url)
             ->seeStatusCode(401)
+            ->seeHeader('content-type', 'application/json')
             ->seeJsonStructure(['error']);
     }
 }

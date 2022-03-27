@@ -20,7 +20,7 @@ class SongsController extends Controller
         return SongResource::collection($songs)->response();
     }
 
-    public function oneFile(Request $request): Response|StreamedResponse|ResponseFactory
+    public function oneFile(Request $request): StreamedResponse|JsonResponse
     {
         $file_name = $request->query('file_name');
         Log::info("[SongsController] Requesting to download file with name '" . $file_name . "'");
@@ -28,7 +28,7 @@ class SongsController extends Controller
         $file_path = 'songs/' . $file_name;
         if (!Storage::exists($file_path) || $file_name == ".gitkeep") {
             Log::warning("[SongsController] The file does not exist");
-            return response("File not found", status: 404);
+            return response()->json(['error' => "File not found"], status: 404);
         }
 
         Log::info('[SongsController] The file does exist');

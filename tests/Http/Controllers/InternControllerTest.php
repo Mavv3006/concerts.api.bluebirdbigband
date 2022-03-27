@@ -74,7 +74,7 @@ class InternControllerTest extends TestCase
         SongType::factory()->create();
         ConcertRecording::factory()->count(6)->create();
 
-        $this->get('intern/downloads', $this->getLoginHeader())
+        $this->get('download/recordings', $this->getLoginHeader())
             ->seeStatusCode(200)
             ->seeJsonStructure([
                 [
@@ -99,7 +99,7 @@ class InternControllerTest extends TestCase
         Concert::factory()->count(3)->create();
 
         $this
-            ->get('intern/downloads', $this->getLoginHeader())
+            ->get('download/recordings', $this->getLoginHeader())
             ->seeStatusCode(200)
             ->seeJsonEquals([]);
     }
@@ -114,7 +114,7 @@ class InternControllerTest extends TestCase
         $concert = $recording->concert;
 
         $this
-            ->get('intern/downloads', $this->getLoginHeader())
+            ->get('download/recordings', $this->getLoginHeader())
             ->seeStatusCode(200)
             ->seeJsonEquals([
                 [
@@ -137,7 +137,7 @@ class InternControllerTest extends TestCase
     public function test_downloads_without_logging_in()
     {
         $this
-            ->get('intern/downloads')
+            ->get('download/recordings')
             ->seeStatusCode(401)
             ->seeJsonStructure(['error']);
     }
