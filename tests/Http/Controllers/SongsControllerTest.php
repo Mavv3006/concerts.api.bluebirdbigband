@@ -54,4 +54,16 @@ class SongsControllerTest extends TestCase
             ->seeHeader('content-type', 'application/json')
             ->seeJsonStructure(['error']);
     }
+
+    public function test_no_query_parameter()
+    {
+        $file_name = 'test.mp3';
+        File::create($file_name, 100)->storeAs('songs', $file_name, 'local');
+        Song::factory()->create(['file_name' => $file_name]);
+
+        $this
+            ->get('download/song', $this->getLoginHeader())
+            ->seeStatusCode(400)
+            ->seeJsonStructure(['error']);
+    }
 }

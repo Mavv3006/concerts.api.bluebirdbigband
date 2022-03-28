@@ -23,8 +23,13 @@ class SongsController extends Controller
     public function oneFile(Request $request): StreamedResponse|JsonResponse
     {
         $file_name = $request->query('file_name');
-        Log::info("[SongsController] Requesting to download file with name '" . $file_name . "'");
 
+        if ($file_name == null) {
+            Log::warning("[SongsController] 'file_name' query parameter is not set.");
+            return response()->json(['error' => "Required 'file_name' query parameter is set"], 400);
+        }
+
+        Log::info("[SongsController] Requesting to download file with name '" . $file_name . "'");
         $file_path = 'songs/' . $file_name;
         if (!Storage::exists($file_path) || $file_name == ".gitkeep") {
             Log::warning("[SongsController] The file does not exist");
