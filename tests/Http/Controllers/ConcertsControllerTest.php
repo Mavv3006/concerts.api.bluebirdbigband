@@ -12,6 +12,14 @@ class ConcertsControllerTest extends TestCase
 {
     use DatabaseMigrations;
 
+    /*
+     * TODO:
+     * - add test to verify response structure
+     * - add test for past concerts when there are concerts for in the future in the DB
+     * - add test to verify that /concerts/all returns all concerts available in the DB
+     * - add test for no concerts for /concerts/past and /concerts/all
+     * */
+
     public function test_upcoming_including_today()
     {
         Concert::factory()->create([
