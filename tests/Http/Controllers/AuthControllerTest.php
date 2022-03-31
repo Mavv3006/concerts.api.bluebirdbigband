@@ -12,6 +12,12 @@ class AuthControllerTest extends TestCase
 {
     use DatabaseMigrations;
 
+    /*
+     * TODO:
+     * - Add test for /auth/login without request body --> 400
+     * - Add test for /auth/login with wrong credentials --> 401
+     * */
+
     public function test_login_successful()
     {
         User::factory()->create(['name' => 'test', 'password' => Hash::make('test')]);
@@ -51,14 +57,6 @@ class AuthControllerTest extends TestCase
             ->seeJsonStructure(['error', 'message']);
     }
 
-    public function test_me_successful()
-    {
-        $this
-            ->get('auth/me', $this->getLoginHeader())
-            ->seeStatusCode(200)
-            ->seeJsonStructure(['name', 'id', 'created_at', 'updated_at']);
-    }
-
     public function test_logout_successful()
     {
         $this
@@ -71,14 +69,6 @@ class AuthControllerTest extends TestCase
     {
         $this
             ->get('auth/logout')
-            ->seeStatusCode(401)
-            ->seeJsonStructure(['error']);
-    }
-
-    public function test_me_auth_route_protection()
-    {
-        $this
-            ->get('auth/me')
             ->seeStatusCode(401)
             ->seeJsonStructure(['error']);
     }
