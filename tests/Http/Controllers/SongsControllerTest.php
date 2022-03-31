@@ -64,6 +64,6 @@ class SongsControllerTest extends TestCase
         $this
             ->get('download/song', $this->getLoginHeader())
             ->seeStatusCode(400)
-            ->seeJsonStructure(['error']);
+            ->seeJsonStructure(['error', 'message']);
     }
 }

@@ -13,6 +13,11 @@ class DownloadControllerTest extends TestCase
 {
     use DatabaseMigrations;
 
+    /*
+     * TODO:
+     * - add test for /download/recordings with no recordings in DB
+     * */
+
     private string $songs_url = 'download/songs';
     private string $recordings_url = 'download/recordings';
 
