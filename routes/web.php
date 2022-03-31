@@ -15,6 +15,9 @@
 
 use Laravel\Lumen\Routing\Router;
 
+// TODO: change routes for concerts --> group together
+// TODO: remove /old/upcoming, also from controller
+
 $router->get('/all', 'ConcertsController@all');
 $router->get('/upcoming', 'ConcertsController@upcoming');
 $router->get('/past', 'ConcertsController@past');

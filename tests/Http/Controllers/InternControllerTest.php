@@ -13,6 +13,11 @@ class InternControllerTest extends TestCase
 {
     use DatabaseMigrations;
 
+    /*
+     * TODO:
+     * - remove download related tests from this file
+     * */
+
     public function test_intern_resources()
     {
         $json_response_structure = [
