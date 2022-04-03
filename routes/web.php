@@ -15,13 +15,13 @@
 
 use Laravel\Lumen\Routing\Router;
 
-// TODO: clean up routes
 // TODO: add tests for /download/recording
 
-$router->get('/all', 'ConcertsController@all');
-$router->get('/upcoming', 'ConcertsController@upcoming');
-$router->get('/past', 'ConcertsController@past');
-$router->get('/old/upcoming', 'ConcertsController@old_upcoming');
+$router->group(['prefix' => 'concerts'], function () use ($router) {
+    $router->get('/all', 'ConcertsController@all');
+    $router->get('/upcoming', 'ConcertsController@upcoming');
+    $router->get('/past', 'ConcertsController@past');
+});
 
 $router->group(['prefix' => 'auth'], function () use ($router) {
     $router->post('login', 'AuthController@login');
@@ -36,23 +36,14 @@ $router->group([
     'middleware' => 'auth'
 ], function () use ($router) {
     $router->get('basics', 'InternController@basics');
-    $router->get('song/{file_name}', ['as' => 'song', 'uses' => 'InternController@song']);
 });
 
-$router->group(['prefix' => 'download'], function () use ($router) {
-    $router->group(['prefix' => 'debug'], function () use ($router) {
-        $router->get('all-filenames', 'DownloadController@getAllFileNames');
-        $router->get('id/{id}', 'DownloadController@download');
-        $router->get('filename', 'DownloadController@downloadByName');
-    });
-
-    $router->group(['middleware' => 'auth'], function () use ($router) {
-        $router->get('recordings', 'InternController@downloads');
-        $router->get('songs', 'SongsController@getAll');
-        $router->get('song', 'SongsController@oneFile');
-    });
-
+$router->group([
+    'prefix' => 'download',
+    'middleware' => 'auth'
+], function () use ($router) {
     $router->get('recording', 'ConcertRecordingsController@oneFile');
-
+    $router->get('recordings', 'InternController@downloads');
+    $router->get('song', 'SongsController@oneFile');
+    $router->get('songs', 'SongsController@getAll');
 });
-
