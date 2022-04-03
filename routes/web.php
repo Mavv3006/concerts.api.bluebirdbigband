@@ -15,8 +15,6 @@
 
 use Laravel\Lumen\Routing\Router;
 
-// TODO: add tests for /download/recording
-
 $router->group(['prefix' => 'concerts'], function () use ($router) {
     $router->get('/all', 'ConcertsController@all');
     $router->get('/upcoming', 'ConcertsController@upcoming');
