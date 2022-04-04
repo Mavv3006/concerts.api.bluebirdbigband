@@ -6,11 +6,9 @@ use App\Http\Resources\SongResource;
 use App\Models\Song;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
-use Laravel\Lumen\Http\ResponseFactory;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class SongsController extends Controller
@@ -25,7 +23,7 @@ class SongsController extends Controller
     {
         try {
             $credentials = $this->validate($request, [
-                'file_name' => 'required',
+                'file_name' => 'required'
             ]);
 
             $file_name = $credentials['file_name'];
@@ -38,7 +36,8 @@ class SongsController extends Controller
             }
 
             Log::info('[SongController] The file does exist');
-            return Storage::download($file_path);
+            var_dump(Storage::mimeType($file_path));
+            return Storage::download($file_path, $file_name);
         } catch (ValidationException $e) {
             Log::warning("[SongController] 'file_name' query parameter is not set.");
             return response()->json([
