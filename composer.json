@@ -11,7 +11,7 @@
     "require": {
         "php": "^8.0",
         "fruitcake/laravel-cors": "x",
-        "laravel/lumen-framework": "^8.0",
+        "laravel/lumen-framework": "8.x",
         "league/flysystem": "1.x",
         "php-open-source-saver/jwt-auth": "x"
     },
