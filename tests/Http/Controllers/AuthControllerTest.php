@@ -4,7 +4,6 @@ namespace Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use JetBrains\PhpStorm\ArrayShape;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use TestCase;
 
@@ -12,21 +11,30 @@ class AuthControllerTest extends TestCase
 {
     use DatabaseMigrations;
 
-    /*
-     * TODO:
-     * - Add test for /auth/login without request body --> 400
-     * - Add test for /auth/login with wrong credentials --> 401
-     * */
+    public function test_login_with_wrong_credentials()
+    {
+        User::factory()->create(['name' => 'test', 'password' => Hash::make('test')]);
+
+        $this
+            ->post('auth/login', ['name' => 'test', 'password' => 'bla bla'])
+            ->seeStatusCode(401)
+            ->seeJsonStructure(['error']);
+    }
+
+    public function test_login_without_request_body()
+    {
+        $this
+            ->post('auth/login')
+            ->seeStatusCode(400)
+            ->seeJsonStructure(['error', 'message']);
+    }
 
     public function test_login_successful()
     {
         User::factory()->create(['name' => 'test', 'password' => Hash::make('test')]);
 
         $this
-            ->json('POST', 'auth/login', [
-                'name' => "test",
-                'password' => "test"
-            ])
+            ->post('auth/login', ['name' => "test", 'password' => "test"])
             ->seeStatusCode(200)
             ->seeJsonStructure([
                 'access_token',
@@ -43,7 +51,7 @@ class AuthControllerTest extends TestCase
         User::factory()->create(['name' => 'test', 'password' => Hash::make('test')]);
 
         $this
-            ->json('POST', 'auth/login', ['name' => "test"])
+            ->post('auth/login', ['name' => "test"])
             ->assertResponseStatus(400);
     }
 
@@ -52,7 +60,7 @@ class AuthControllerTest extends TestCase
         User::factory()->create(['name' => 'test', 'password' => Hash::make('test')]);
 
         $this
-            ->json('POST', 'auth/login', ["password" => "test"])
+            ->post('auth/login', ["password" => "test"])
             ->seeStatusCode(400)
             ->seeJsonStructure(['error', 'message']);
     }
