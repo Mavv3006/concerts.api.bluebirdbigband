@@ -2,9 +2,6 @@
 
 namespace Http\Controllers;
 
-use App\Models\Concert;
-use App\Models\ConcertRecording;
-use App\Models\SongType;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use TestCase;
 
@@ -12,11 +9,6 @@ use TestCase;
 class InternControllerTest extends TestCase
 {
     use DatabaseMigrations;
-
-    /*
-     * TODO:
-     * - remove download related tests from this file
-     * */
 
     public function test_intern_resources()
     {
@@ -71,80 +63,6 @@ class InternControllerTest extends TestCase
             ->seeStatusCode(200)
             ->seeJsonStructure($json_response_structure)
             ->seeJsonEquals($json_response_exact);
-    }
-
-    public function test_downloads()
-    {
-        Concert::factory()->count(3)->create();
-        SongType::factory()->create();
-        ConcertRecording::factory()->count(6)->create();
-
-        $this->get('download/recordings', $this->getLoginHeader())
-            ->seeStatusCode(200)
-            ->seeJsonStructure([
-                [
-                    'concert' => [
-                        'date',
-                        'description',
-                        'place'
-                    ],
-                    'files' => [
-                        [
-                            'description',
-                            'file_size',
-                            'file_name'
-                        ]
-                    ]
-                ]
-            ]);
-    }
-
-    public function test_downloads_without_files()
-    {
-        Concert::factory()->count(3)->create();
-
-        $this
-            ->get('download/recordings', $this->getLoginHeader())
-            ->seeStatusCode(200)
-            ->seeJsonEquals([]);
-    }
-
-    public function test_downloads_only_concerts_with_files()
-    {
-        Concert::factory()->count(3)->create();
-        SongType::factory()->create();
-        ConcertRecording::factory()->count(1)->create();
-
-        $recording = ConcertRecording::first();
-        $concert = $recording->concert;
-
-        $this
-            ->get('download/recordings', $this->getLoginHeader())
-            ->seeStatusCode(200)
-            ->seeJsonEquals([
-                [
-                    'concert' => [
-                        'date' => $concert->date(),
-                        'description' => $concert->place_description,
-                        'place' => $concert->place->name
-                    ],
-                    'files' => [
-                        [
-                            'description' => $recording->description,
-                            'file_name' => $recording->file_name,
-                            'file_size' => $recording->size
-                        ]
-                    ]
-                ]
-            ]);
-    }
-
-    public function test_downloads_without_logging_in()
-    {
-        $this
-            ->get('download/recordings')
-            ->seeStatusCode(401)
-            ->seeJsonStructure(['error']);
     }
 
     public function test_basics_without_logging_in()
