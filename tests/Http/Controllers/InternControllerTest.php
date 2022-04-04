@@ -2,8 +2,6 @@
 
 namespace Http\Controllers;
 
-use App\Models\Concert;
-use App\Models\ConcertRecording;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use TestCase;
 
@@ -15,57 +13,49 @@ class InternControllerTest extends TestCase
     public function test_intern_resources()
     {
         $json_response_structure = [
-            'emails' => [
-                'all',
-                'maxi' => [
-                    'all',
-                    'trumpet',
-                    'trombone',
-                    'saxophone',
-                    'rhythm'
-                ],
-                'midi' => [
-                    'all',
-                    'trumpet',
-                    'trombone',
-                    'saxophone',
-                    'rhythm'
-                ],
-                'other' => [
-                    'bandleader',
-                    'webadmin'
+            '*' => [
+                'name',
+                'emails' => [
+                    '*' => [
+                        'name',
+                        'email'
+                    ]
                 ]
-            ],
-            'gigs' => [
-                'bbbb',
-                'dtb'
             ]
         ];
         $json_response_exact = [
-            'emails' => [
-                'all' => 'musikerinnen@bluebirdbigband.de',
-                'maxi' => [
-                    'all' => 'maxi@bluebirdbigband.de',
-                    'trumpet' => 'maxi-Trompeten@bluebirdbigband.de',
-                    'trombone' => 'maxi-Posaunen@bluebirdbigband.de',
-                    'saxophone' => 'maxi-Saxophone@bluebirdbigband.de',
-                    'rhythm' => 'maxi-Rhytmusgruppe@bluebirdbigband.de',
+            [
+                'name' => 'ALLE (Midi / Maxi)',
+                'emails' => [
+                    ['name' => 'Alle (Midi/Maxi)', 'email' => 'MusikerInnen@BlueBirdBigBand.de']
                 ],
-                'midi' => [
-                    'all' => 'midi@bluebirdbigband.de',
-                    'trumpet' => 'midi-Trompeten@bluebirdbigband.de',
-                    'trombone' => 'midi-Posaunen@bluebirdbigband.de',
-                    'saxophone' => 'midi-Saxophone@bluebirdbigband.de',
-                    'rhythm' => 'midi-Rhytmusgruppe@bluebirdbigband.de',
-                ],
-                'other' => [
-                    'bandleader' => 'bandleiter@bluebirdbigband.de',
-                    'webadmin' => 'webadmin@bluebirdbigband.de'
+            ],
+            [
+                'name' => 'MAXI',
+                'emails' => [
+                    ['name' => 'Alle Maxi-Mitglieder', 'email' => 'maxi@BlueBirdBigBand.de'],
+                    ['name' => 'Saxophonsatz', 'email' => 'maxi-Saxophone@BlueBirdBigBand.de'],
+                    ['name' => 'Posaunensatz', 'email' => 'maxi-Posaunen@BlueBirdBigBand.de'],
+                    ['name' => 'Trompetensatz', 'email' => 'maxi-Trompeten@BlueBirdBigBand.de'],
+                    ['name' => 'Rhythmusgruppe', 'email' => 'maxi-Rhythmusgruppe@BlueBirdBigBand.de'],
                 ]
             ],
-            'gigs' => [
-                'bbbb' => 'https://www.google.com',
-                'dtb' => 'https://www.google.com'
+            [
+                'name' => 'MIDI',
+                'emails' => [
+                    ['name' => 'Alle Midi-Mitglieder', 'email' => 'midi@BlueBirdBigBand.de'],
+                    ['name' => 'Saxophonsatz', 'email' => 'midi-Saxophone@BlueBirdBigBand.de'],
+                    ['name' => 'Posaunensatz', 'email' => 'midi-Posaunen@BlueBirdBigBand.de'],
+                    ['name' => 'Trompetensatz', 'email' => 'midi-Trompeten@BlueBirdBigBand.de'],
+                    ['name' => 'Rhythmusgruppe', 'email' => 'midi-Rhythmusgruppe@BlueBirdBigBand.de'],
+                ]
+            ],
+            [
+                'name' => 'SONSTIGE',
+                'emails' => [
+                    ['name' => 'Bandleader', 'email' => 'Bandleiter@BlueBirdBigBand.de'],
+                    ['name' => 'Webmaster', 'email' => 'webadmin@bluebirdbigband.de']
+                ]
             ]
         ];
         $this
@@ -73,80 +63,6 @@ class InternControllerTest extends TestCase
             ->seeStatusCode(200)
             ->seeJsonStructure($json_response_structure)
             ->seeJsonEquals($json_response_exact);
-    }
-
-    public function test_downloads()
-    {
-        Concert::factory()->count(3)->create();
-        ConcertRecording::factory()->count(6)->create();
-
-        $this->get('intern/downloads', $this->getLoginHeader())
-            ->seeStatusCode(200)
-            ->seeJsonStructure([
-                [
-                    'concert' => [
-                        'date',
-                        'description',
-                        'place'
-                    ],
-                    'files' => [
-                        [
-                            'description',
-                            'file_size',
-                            'file_name'
-                        ]
-                    ]
-                ]
-            ]);
-    }
-
-    public function test_downloads_without_files()
-    {
-        Concert::factory()->count(3)->create();
-
-        $this
-            ->get('intern/downloads', $this->getLoginHeader())
-            ->seeStatusCode(200)
-            ->seeJsonEquals([]);
-    }
-
-    public function test_downloads_only_concerts_with_files()
-    {
-        Concert::factory()->count(3)->create();
-        ConcertRecording::factory()->count(1)->create();
-
-        $recording = ConcertRecording::first();
-        $concert = $recording->concert;
-
-        $this
-            ->get('intern/downloads', $this->getLoginHeader())
-            ->seeStatusCode(200)
-            ->seeJsonEquals([
-                [
-                    'concert' => [
-                        'date' => $concert->date(),
-                        'description' => $concert->place_description,
-                        'place' => $concert->place->name
-                    ],
-                    'files' => [
-                        [
-                            'description' => $recording->description,
-                            'file_name' => $recording->file_name,
-                            'file_size' => $recording->size
-                        ]
-                    ]
-                ]
-            ]);
-    }
-
-    public function test_downloads_without_logging_in()
-    {
-        $this
-            ->get('intern/downloads')
-            ->seeStatusCode(401)
-            ->seeJsonStructure([
-                'error',
-            ]);
     }
 
     public function test_basics_without_logging_in()

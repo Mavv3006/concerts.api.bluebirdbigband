@@ -2,7 +2,6 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class ConcertRecordings extends Migration
@@ -20,7 +19,7 @@ class ConcertRecordings extends Migration
             $table->string('description');
             $table->double('size');
             $table->date('concert_date');
-            $table->timestamps();
+            $table->foreignId('type');
         });
     }
 

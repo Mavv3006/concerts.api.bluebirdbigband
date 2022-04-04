@@ -15,20 +15,16 @@
 
 use Laravel\Lumen\Routing\Router;
 
-$router->get('/', function () use ($router) {
-    return $router->app->version();
+$router->group(['prefix' => 'concerts'], function () use ($router) {
+    $router->get('/all', 'ConcertsController@all');
+    $router->get('/upcoming', 'ConcertsController@upcoming');
+    $router->get('/past', 'ConcertsController@past');
 });
-
-$router->get('/all', 'ConcertsController@all');
-$router->get('/upcoming', 'ConcertsController@upcoming');
-$router->get('/past', 'ConcertsController@past');
-$router->get('/old/upcoming', 'ConcertsController@old_upcoming');
 
 $router->group(['prefix' => 'auth'], function () use ($router) {
     $router->post('login', 'AuthController@login');
 
     $router->group(['middleware' => 'auth'], function () use ($router) {
-        $router->get('me', 'AuthController@me');
         $router->get('logout', 'AuthController@logout');
     });
 });
@@ -38,7 +34,14 @@ $router->group([
     'middleware' => 'auth'
 ], function () use ($router) {
     $router->get('basics', 'InternController@basics');
-    $router->get('downloads', 'InternController@downloads');
-    $router->get('song/{file_name}', ['as' => 'song', 'uses' => 'InternController@song']);
 });
 
+$router->group([
+    'prefix' => 'download',
+    'middleware' => 'auth'
+], function () use ($router) {
+    $router->get('recording', 'ConcertRecordingsController@oneFile');
+    $router->get('recordings', 'InternController@downloads');
+    $router->get('song', 'SongsController@oneFile');
+    $router->get('songs', 'SongsController@getAll');
+});

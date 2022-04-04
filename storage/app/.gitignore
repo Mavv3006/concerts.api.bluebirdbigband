@@ -1,2 +1,6 @@
 *
 !.gitignore
+!songs/
+!songs/.gitkeep
+!recordings/
+!recordings/.gitkeep

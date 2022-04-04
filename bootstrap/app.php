@@ -68,6 +68,7 @@ $app->configure('app');
 $app->configure('jwt');
 $app->configure('auth');
 $app->configure('cors');
+$app->configure('filesystems');
 
 /*
 |--------------------------------------------------------------------------
@@ -104,6 +105,7 @@ $app->register(Fruitcake\Cors\CorsServiceProvider::class);
 $app->register(AppServiceProvider::class);
 $app->register(AuthServiceProvider::class);
 $app->register(LumenServiceProvider::class);
+$app->register(Illuminate\Filesystem\FilesystemServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 
 /*
