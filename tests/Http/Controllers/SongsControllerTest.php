@@ -34,6 +34,22 @@ class SongsControllerTest extends TestCase
             ->andReturn($file);
     }
 
+    public function test_file_name_in_request_body()
+    {
+        Storage::fake('local');
+        $file_name = "test_get_one_file.mp3";
+        $file = File::create($file_name, 100);
+        $file->storeAs('songs', $file_name, 'local');
+        Song::factory()->create(['file_name' => $file_name]);
+
+        $response = $this->json('GET', 'download/song', ['file_name' => $file_name], $this->getLoginHeader());
+
+        $response
+            ->seeStatusCode(400)
+            ->seeHeader('content-type', 'application/json')
+            ->seeJsonStructure(['error', 'message']);
+    }
+
     public function test_fail_download()
     {
         $file_name = 'test.mp3';
