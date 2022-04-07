@@ -10,15 +10,15 @@
     "type": "project",
     "require": {
         "php": "^8.0",
-        "fruitcake/laravel-cors": "^2.0",
-        "laravel/lumen-framework": "^8.0",
-        "league/flysystem": "1.1",
-        "php-open-source-saver/jwt-auth": "^1.2"
+        "fruitcake/laravel-cors": "x",
+        "laravel/lumen-framework": "8.x",
+        "league/flysystem": "1.x",
+        "php-open-source-saver/jwt-auth": "x"
     },
     "require-dev": {
-        "fakerphp/faker": "^1.9.1",
-        "mockery/mockery": "^1.3.1",
-        "phpunit/phpunit": "^9.3"
+        "fakerphp/faker": "x",
+        "mockery/mockery": "x",
+        "phpunit/phpunit": "x"
     },
     "autoload": {
         "psr-4": {
@@ -45,9 +45,6 @@
         ],
         "serve": [
             "php -S localhost:8080 -t public/"
-        ],
-        "post-package-install": [
-            "php artisan jwt:secret"
         ],
         "test": "phpunit"
     }
