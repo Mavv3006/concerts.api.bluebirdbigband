@@ -28,7 +28,7 @@ class SongsController extends Controller
                 function ($attribute, $value, $fail) use ($request) {
                     $is_query_param = $request->query('file_name') == $value;
                     if (!$is_query_param) {
-                        $fail  ('The ' . $attribute . ' is invalid.');
+                        $fail('The ' . $attribute . ' is invalid.');
                     }
                 }
             ]
