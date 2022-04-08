@@ -17,7 +17,7 @@ class ConcertRecordingFactory extends Factory
     public function definition(): array
     {
         return [
-            'file_name' => $this->faker->slug(2, false),
+            'file_name' => "test.mp3",
             'description' => $this->faker->name,
             'size' => mt_rand(5 * 10, 25 * 10) / 10,
             'concert_date' => Concert::all()->random()->date(),
